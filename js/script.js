@@ -14,4 +14,29 @@ document.addEventListener("DOMContentLoaded", function() {
             slider.style.transform = `translateX(-${currentSlide * 100}%)`;
         }, 5000);
     }
+
+    // Contact form handler
+    const form = document.getElementById('contact-form-id');
+    if (form) {
+        const formMessages = document.getElementById('form-messages');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+
+            fetch('contact-form-handler.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                formMessages.textContent = data;
+                form.reset();
+            })
+            .catch(error => {
+                formMessages.textContent = 'Oops! An error occurred and your message could not be sent.';
+            });
+        });
+    }
 });
